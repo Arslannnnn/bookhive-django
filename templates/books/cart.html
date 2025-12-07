@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>🛒 Моя корзина</h1>
+
+    {% if cart.items.all %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Книга</th>
+                <th>Цена</th>
+                <th>Количество</th>
+                <th>Сумма</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart.items.all %}
+            <tr>
+                <td>{{ item.book.title }}</td>
+                <td>{{ item.book.price }} ₽</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.total_price }} ₽</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="table-success">
+                <th colspan="3">Итого:</th>
+                <th>{{ cart.total_price }} ₽</th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="text-end">
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">Продолжить покупки</a>
+        <button class="btn btn-success">Оформить заказ</button>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <h4>Корзина пуста</h4>
+        <p>Добавьте книги из каталога!</p>
+        <a href="{% url 'book_list' %}" class="btn btn-primary">Перейти в каталог</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
