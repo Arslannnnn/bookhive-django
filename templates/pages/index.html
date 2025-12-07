@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - BookHive{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary mb-3">
+        <i class="bi bi-book-half"></i> Добро пожаловать в BookHive!
+    </h1>
+    <p class="lead text-muted mb-4">Ваша персональная цифровая библиотека с лучшими книгами</p>
+    
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <p class="fs-5">Здесь вы найдете более 1000 книг различных жанров, от классики до современных бестселлеров. 
+                    Создавайте свои коллекции, добавляйте книги в список желаний и оформляйте заказы.</p>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'book_list' %}" class="btn btn-primary btn-lg me-3">
+                            <i class="bi bi-book"></i> Смотреть каталог
+                        </a>
+                        {% if not user.is_authenticated %}
+                        <a href="{% url 'admin:login' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-box-arrow-in-right"></i> Войти в аккаунт
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Преимущества -->
+<h2 class="text-center mb-4">Почему выбирают BookHive?</h2>
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-book fs-1 text-primary"></i>
+                </div>
+                <h5 class="card-title">Большой выбор</h5>
+                <p class="card-text text-muted">Тысячи книг различных жанров и авторов</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-cart-check fs-1 text-success"></i>
+                </div>
+                <h5 class="card-title">Удобная корзина</h5>
+                <p class="card-text text-muted">Легко добавляйте книги и оформляйте заказы</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center p-4">
+                <div class="mb-3">
+                    <i class="bi bi-star fs-1 text-warning"></i>
+                </div>
+                <h5 class="card-title">Список желаний</h5>
+                <p class="card-text text-muted">Сохраняйте понравившиеся книги на будущее</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Популярные жанры -->
+<h2 class="text-center mb-4">Популярные жанры</h2>
+<div class="row g-3 mb-5">
+    <div class="col-6 col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <a href="{% url 'book_list' %}?genre=Фантастика" class="text-decoration-none">
+                    <span class="badge bg-primary fs-6 p-2 w-100">Фантастика</span>
+                    <p class="mt-2 mb-0 small text-muted">Книги о будущем и технологиях</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <a href="{% url 'book_list' %}?genre=Детектив" class="text-decoration-none">
+                    <span class="badge bg-success fs-6 p-2 w-100">Детектив</span>
+                    <p class="mt-2 mb-0 small text-muted">Загадки и расследования</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <a href="{% url 'book_list' %}?genre=Классика" class="text-decoration-none">
+                    <span class="badge bg-warning fs-6 p-2 w-100">Классика</span>
+                    <p class="mt-2 mb-0 small text-muted">Великие произведения</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <a href="{% url 'book_list' %}?genre=Фэнтези" class="text-decoration-none">
+                    <span class="badge bg-danger fs-6 p-2 w-100">Фэнтези</span>
+                    <p class="mt-2 mb-0 small text-muted">Миры магии и приключений</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
