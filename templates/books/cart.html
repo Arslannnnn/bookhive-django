@@ -1,46 +1,95 @@
 {% extends 'base.html' %}
 
+{% block title %}Корзина - KnigoPoisk{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
-    <h1>🛒 Моя корзина</h1>
+    <h1 class="mb-4">
+        <i class="bi bi-cart"></i> Моя корзина
+    </h1>
 
     {% if cart.items.all %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Книга</th>
-                <th>Цена</th>
-                <th>Количество</th>
-                <th>Сумма</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cart.items.all %}
-            <tr>
-                <td>{{ item.book.title }}</td>
-                <td>{{ item.book.price }} ₽</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.total_price }} ₽</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr class="table-success">
-                <th colspan="3">Итого:</th>
-                <th>{{ cart.total_price }} ₽</th>
-            </tr>
-        </tfoot>
-    </table>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Книга</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th>Сумма</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart.items.all %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'book_detail' item.book.id %}" class="text-decoration-none">
+                                <strong>{{ item.book.title }}</strong>
+                                <br>
+                                <small class="text-muted">{{ item.book.author.name }}</small>
+                            </a>
+                        </td>
+                        <td>{{ item.book.price }} ₽</td>
+                        <td>
+                            <form method="post" action="{% url 'update_cart_item' item.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <div class="input-group input-group-sm" style="width: 120px;">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}"
+                                           min="1" max="10" class="form-control">
+                                    <button type="submit" class="btn btn-outline-primary">
+                                        <i class="bi bi-check"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </td>
+                        <td><strong>{{ item.total_price }} ₽</strong></td>
+                        <td>
+                            <a href="{% url 'remove_from_cart' item.id %}"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Удалить {{ item.book.title }} из корзины?')">
+                                <i class="bi bi-trash"></i> Удалить
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="table-success">
+                    <tr>
+                        <th colspan="3" class="text-end">Итого к оплате:</th>
+                        <th colspan="2">{{ total_price }} ₽</th>
+                    </tr>
+                </tfoot>
+            </table>
 
-    <div class="text-end">
-        <a href="{% url 'book_list' %}" class="btn btn-secondary">Продолжить покупки</a>
-        <button class="btn btn-success">Оформить заказ</button>
+            <div class="d-flex justify-content-between mt-4">
+                <div>
+                    <a href="{% url 'book_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Продолжить покупки
+                    </a>
+                </div>
+                <div>
+                    <a href="{% url 'view_wishlist' %}" class="btn btn-outline-warning me-2">
+                        <i class="bi bi-heart"></i> В список желаний
+                    </a>
+                    <a href="#" class="btn btn-success btn-lg" onclick="return alert('Оплата в разработке')">
+                        <i class="bi bi-credit-card"></i> Оформить заказ
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
     {% else %}
-    <div class="alert alert-info">
-        <h4>Корзина пуста</h4>
-        <p>Добавьте книги из каталога!</p>
-        <a href="{% url 'book_list' %}" class="btn btn-primary">Перейти в каталог</a>
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="bi bi-cart-x display-1 text-muted"></i>
+        </div>
+        <h3 class="text-muted mb-3">Корзина пуста</h3>
+        <p class="text-muted mb-4">Добавьте книги из каталога, чтобы они появились здесь</p>
+        <a href="{% url 'book_list' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-book"></i> Перейти в каталог
+        </a>
     </div>
     {% endif %}
 </div>
